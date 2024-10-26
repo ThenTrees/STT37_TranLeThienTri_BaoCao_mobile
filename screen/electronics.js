@@ -19,9 +19,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import React, { useState, useEffect } from "react";
 import Footer from "./footer";
 import axios from "axios";
-import { useRoute } from "@react-navigation/native";
 export default Electronics = ({ navigation }) => {
-    const route = useRoute();
     const [modalVisible, setModalVisible] = useState(false);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -93,6 +91,9 @@ export default Electronics = ({ navigation }) => {
             newCart[index].quantity++;
         }
         setCart(newCart);
+        // alert(
+        //     `Add ${product.id} to cart successfully with quantity ${newCart[index].quantity}`
+        // );
     };
 
     return (
@@ -113,8 +114,8 @@ export default Electronics = ({ navigation }) => {
                         <TouchableOpacity
                             style={styles.cartBtn}
                             onPress={() => {
-                                // addToCart(productDetail);
-                                navigation.navigate("Cart", cart);
+                                console.log("Cart", cart);
+                                navigation.navigate("Cart", { cartData: cart });
                             }}
                         >
                             <AntDesign
@@ -273,7 +274,13 @@ export default Electronics = ({ navigation }) => {
                                     </Text>
                                     <Text>{item.rating}</Text>
                                 </View>
-                                <TouchableOpacity style={styles.addToCartBtn}>
+                                <TouchableOpacity
+                                    style={styles.addToCartBtn}
+                                    onPress={() => {
+                                        addToCart(item);
+                                        alert("Add to cart successfully");
+                                    }}
+                                >
                                     {/* add to cart */}
                                     <FontAwesome
                                         name="plus-circle"
@@ -382,7 +389,10 @@ export default Electronics = ({ navigation }) => {
                         </View>
                         <TouchableOpacity
                             style={styles.btnAddToCartModal}
-                            onPress={() => setModalVisible(!modalVisible)}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                                alert("Add to cart successfully");
+                            }}
                         >
                             <Text
                                 style={{

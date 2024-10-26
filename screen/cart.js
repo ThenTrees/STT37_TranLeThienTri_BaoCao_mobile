@@ -6,10 +6,16 @@ import {
     SafeAreaView,
     ScrollView,
     FlatList,
+    Image,
 } from "react-native";
 import React, { useState } from "react";
-export default Cart = ({ navigation }) => {
-    const [products, setProducts] = useState([]);
+import { useRoute } from "@react-navigation/native";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import Entypo from "@expo/vector-icons/Entypo";
+export default Cart = () => {
+    const route = useRoute();
+    const { cartData } = route.params;
+    // const [products, setProducts] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     return (
         <SafeAreaView style={styles.container}>
@@ -17,32 +23,45 @@ export default Cart = ({ navigation }) => {
                 {/* List san pham */}
                 <View style={styles.listProductsContainer}>
                     <FlatList
-                        data={products}
-                        renderItem={(item) => (
-                            <View style={styles.productItem}>
-                                {/* hinh */}
-                                <Image source={{ uri: item.image }} />
-                                <View>
-                                    {/* ten */}
+                        data={cartData}
+                        renderItem={({ item }) => (
+                            <View style={styles.product}>
+                                <Image
+                                    source={{ uri: item.image }}
+                                    style={{ width: 100, height: 100 }}
+                                />
+                                <View style={styles.productBody}>
                                     <Text>{item.name}</Text>
-                                    {/* gia */}
                                     <Text>{item.price}</Text>
-                                    {/* - so luong +*/}
-                                    <View>
+                                    <View style={styles.quantityContainer}>
                                         <TouchableOpacity>
-                                            <Text>-</Text>
+                                            <Entypo
+                                                name="circle-with-minus"
+                                                size={24}
+                                                color="black"
+                                            />
                                         </TouchableOpacity>
                                         <Text>{item.quantity}</Text>
                                         <TouchableOpacity>
-                                            <Text>+</Text>
+                                            <Entypo
+                                                name="circle-with-plus"
+                                                size={24}
+                                                color="black"
+                                            />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View>{/* btn xoa khoi gio hang */}</View>
+                                <TouchableOpacity>
+                                    <EvilIcons
+                                        name="trash"
+                                        size={24}
+                                        color="black"
+                                    />
+                                </TouchableOpacity>
                             </View>
                         )}
                         keyExtractor={(product) => product.id}
-                    ></FlatList>
+                    />
                     {/* btn Thanh toan */}
                 </View>
                 {/* Tong tien */}
@@ -60,6 +79,23 @@ export default Cart = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: "center",
+    },
+    listProductsContainer: {
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+    },
+    product: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 10,
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    productBody: {},
+    quantityContainer: {
+        flexDirection: "row",
         alignItems: "center",
     },
 });
